@@ -433,7 +433,83 @@
   }
   footer a { color: var(--accent); text-decoration: none; }
 
+  /* THEME TOGGLE */
+  .theme-toggle {
+    background: none;
+    border: 1px solid var(--dark-border);
+    color: var(--muted);
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color 0.2s, background 0.2s;
+    flex-shrink: 0;
+  }
+  .theme-toggle:hover { border-color: var(--accent); background: rgba(124,58,237,0.08); }
+
+  /* LIGHT THEME */
+  body.light {
+    --dark: #F5F3FF;
+    --dark-card: #FFFFFF;
+    --dark-border: rgba(124,58,237,0.14);
+    --text: #1E1B4B;
+    --muted: rgba(30,27,75,0.5);
+    --accent: #7C3AED;
+    --green: #059669;
+  }
+  body.light nav {
+    background: rgba(245,243,255,0.92);
+  }
+  body.light .mockup-wrap {
+    box-shadow: 0 20px 60px rgba(124,58,237,0.12);
+  }
+  body.light .mockup-bar {
+    background: #EDE9FE;
+  }
+  body.light .mockup-url {
+    background: rgba(124,58,237,0.06);
+  }
+  body.light .mockup-sidebar {
+    background: #F0EEFF;
+  }
+  body.light .table-mock td {
+    color: rgba(30,27,75,0.72);
+    border-bottom-color: rgba(124,58,237,0.06);
+  }
+  body.light .table-mock th {
+    border-bottom-color: rgba(124,58,237,0.1);
+  }
+  body.light .cfg-row {
+    border-bottom-color: rgba(124,58,237,0.06);
+  }
+  body.light .svc-row-demo {
+    border-bottom-color: rgba(124,58,237,0.06);
+  }
+  body.light .testimonial-text {
+    color: rgba(30,27,75,0.88);
+  }
+  body.light .price-list li {
+    color: rgba(30,27,75,0.8);
+  }
+  body.light .faq-q:hover {
+    background: rgba(124,58,237,0.04);
+  }
+  body.light .hero::before {
+    background: radial-gradient(ellipse, rgba(124,58,237,0.1) 0%, transparent 70%);
+  }
+  body.light .testimonial-section {
+    background: linear-gradient(135deg, rgba(124,58,237,0.05) 0%, transparent 60%);
+  }
+  body.light .badge-pend {
+    color: #B45309;
+    background: rgba(251,191,36,0.2);
+  }
+
   /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .price-grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+  }
   @media (max-width: 600px) {
     nav { padding: 0.75rem 1rem; }
     .nav-logo span { display: none; }
@@ -471,7 +547,10 @@
 
 <nav>
   <div class="nav-logo">EzStudio <span>by Ezequiel</span></div>
-  <a href="https://wa.me/5547920039182?text=Oi!%20Vi%20a%20p%C3%A1gina%20da%20Agenda%20Inteligente%20e%20quero%20saber%20mais!" class="nav-cta" target="_blank">Quero contratar</a>
+  <div style="display:flex;align-items:center;gap:0.75rem;">
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Alternar tema">🌙</button>
+    <a href="https://wa.me/5547920039182?text=Oi!%20Vi%20a%20p%C3%A1gina%20da%20Agenda%20Inteligente%20e%20quero%20saber%20mais!" class="nav-cta" target="_blank">Quero contratar</a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -750,7 +829,7 @@
     <h2>Escolha o plano <em>certo pra você</em></h2>
     <p style="color: var(--muted); margin-top: 0.5rem;">Todos os planos incluem painel completo, agendamento e notificação no WhatsApp.</p>
     <div class="launch-banner">🎉 Lançamento · 5 vagas com desconto especial</div>
-    <div class="price-grid" style="max-width: 1300px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+    <div class="price-grid price-grid-4" style="max-width: 1300px; grid-template-columns: repeat(4, 1fr);">
       <div class="price-card">
         <div class="price-label">Flexível · Mensal</div>
         <div class="price-value"><sup>R$</sup>149</div>
@@ -892,6 +971,17 @@ function toggle(btn) {
   document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
   if (!isOpen) item.classList.add('open');
 }
+function toggleTheme() {
+  const isLight = document.body.classList.toggle('light');
+  document.getElementById('themeBtn').textContent = isLight ? '☀️' : '🌙';
+  localStorage.setItem('ezTheme', isLight ? 'light' : 'dark');
+}
+(function() {
+  if (localStorage.getItem('ezTheme') === 'light') {
+    document.body.classList.add('light');
+    document.getElementById('themeBtn').textContent = '☀️';
+  }
+})();
 </script>
 </body>
 </html>
