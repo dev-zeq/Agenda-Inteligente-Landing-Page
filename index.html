@@ -505,6 +505,23 @@
     color: #B45309;
     background: rgba(251,191,36,0.2);
   }
+  body.light .price-card {
+    background: linear-gradient(145deg, #EDE8FF, #E8E2FF);
+    border-color: rgba(124,58,237,0.18);
+    box-shadow: 0 2px 12px rgba(124,58,237,0.06);
+  }
+  body.light .price-card.featured {
+    background: linear-gradient(145deg, var(--violet), var(--indigo));
+    border-color: var(--violet);
+  }
+  body.light .price-card.featured .price-label,
+  body.light .price-card.featured .price-old,
+  body.light .price-card.featured .price-period,
+  body.light .price-card.featured .monthly-note { color: rgba(255,255,255,0.72); }
+  body.light .price-card.featured .price-value { color: #fff; }
+  body.light .price-card.featured .price-list li { color: rgba(255,255,255,0.88); }
+  body.light .price-card.featured .monthly-note strong { color: #fff; }
+  body.light .monthly-note { border-top-color: rgba(124,58,237,0.15); }
 
   /* RESPONSIVE */
   @media (max-width: 900px) {
