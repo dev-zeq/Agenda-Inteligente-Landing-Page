@@ -316,6 +316,17 @@
   .price-value { font-size: 2.5rem; font-weight: 700; color: var(--text); line-height: 1; }
   .price-value sup { font-size: 1rem; vertical-align: super; }
   .price-period { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; margin-bottom: 1.25rem; }
+  .price-old { font-size: 0.85rem; color: var(--muted); text-decoration: line-through; margin-bottom: 0.2rem; opacity: 0.7; }
+  .launch-banner {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(52,211,153,0.12);
+    border: 1px solid rgba(52,211,153,0.3);
+    color: var(--green);
+    font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 0.4rem 1rem; border-radius: 100px;
+    margin-bottom: 2rem;
+  }
   .price-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.75rem; }
   .price-list li { font-size: 0.88rem; color: rgba(245,244,255,0.8); display: flex; align-items: flex-start; gap: 8px; }
   .price-list li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
@@ -738,11 +749,13 @@
     <div class="section-label">Investimento</div>
     <h2>Simples e <em>sem surpresa</em></h2>
     <p style="color: var(--muted); margin-top: 0.5rem;">Mensalidade obrigatória — porque eu cuido de tudo que roda por trás pra você.</p>
+    <div class="launch-banner">🎉 Lançamento · 5 vagas com desconto especial</div>
     <div class="price-grid" style="max-width: 1000px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
       <div class="price-card">
         <div class="price-label">Agenda · Parcelado</div>
+        <div class="price-old">de 2x R$ 339</div>
         <div class="price-value"><sup>R$</sup>289</div>
-        <div class="price-period">2x no cartão</div>
+        <div class="price-period">2x no cartão · oferta de lançamento</div>
         <ul class="price-list">
           <li>Formulário de agendamento</li>
           <li>Painel com login biométrico</li>
@@ -755,8 +768,9 @@
       <div class="price-card featured">
         <div class="featured-badge">✦ Mais popular</div>
         <div class="price-label">Agenda · À vista</div>
+        <div class="price-old">de R$ 599</div>
         <div class="price-value"><sup>R$</sup>499</div>
-        <div class="price-period">pagamento único · economiza R$ 79</div>
+        <div class="price-period">pagamento único · economiza R$ 100</div>
         <ul class="price-list">
           <li>Formulário de agendamento</li>
           <li>Painel com login biométrico</li>
@@ -768,8 +782,9 @@
       </div>
       <div class="price-card" style="border-color: rgba(196,181,253,0.3);">
         <div class="price-label" style="color: var(--accent);">Agenda Pro · À vista</div>
+        <div class="price-old">de R$ 1.197</div>
         <div class="price-value"><sup>R$</sup>997</div>
-        <div class="price-period">ou 3x R$ 389 no cartão</div>
+        <div class="price-period">ou 3x R$ 389 no cartão · oferta de lançamento</div>
         <ul class="price-list">
           <li>Tudo do plano Agenda</li>
           <li>Site profissional completo</li>
