@@ -202,22 +202,181 @@ nav{
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ── DORES ── */
-.s-dores{background:var(--black);padding:6rem 2rem}
+.s-dores{
+  background:var(--black);
+  padding:6rem 2rem 0;
+  position:relative;
+  overflow:hidden;
+}
+
+/* Noise texture overlay */
+.s-dores::before{
+  content:'';
+  position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  background-repeat:repeat;
+  background-size:200px 200px;
+  pointer-events:none;
+  z-index:0;
+  opacity:.6;
+}
+
+/* Deco lines background */
+.s-dores-bg-lines{
+  position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;
+}
+.s-dores-bg-lines span{
+  position:absolute;display:block;
+  width:1px;background:rgba(255,107,43,.12);
+  animation:dores-line-pulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes dores-line-pulse{
+  0%{opacity:.1}100%{opacity:.45}
+}
+
+.dores-wave-bot{width:calc(100% + 4px);margin-left:-2px;line-height:0;margin-top:5rem}
+.dores-wave-bot svg{display:block;width:100%}
+
+.dores-header{
+  position:relative;z-index:2;
+  display:grid;grid-template-columns:1fr auto;
+  align-items:flex-end;gap:2rem;
+  margin-bottom:4rem;
+}
+.dores-chaos-badge{
+  background:var(--orange);
+  border:2.5px solid rgba(255,255,255,.2);
+  border-radius:20px;
+  padding:1.2rem 1.6rem;
+  transform:rotate(3deg);
+  flex-shrink:0;
+  text-align:center;
+  box-shadow:0 8px 40px rgba(255,107,43,.4);
+  animation:badge-float 4s ease-in-out infinite;
+}
+.dores-chaos-badge .num{font-size:2.4rem;font-weight:800;color:var(--white);line-height:1;display:block}
+.dores-chaos-badge .lbl{font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-top:4px;display:block}
+
 .container{max-width:1100px;margin:0 auto}
 .eyebrow-w{font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);margin-bottom:1rem;display:flex;align-items:center;gap:10px}
 .eyebrow-w::before{content:'✦';font-size:1.2rem}
-.sh2-w{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;color:var(--white);line-height:1.05;margin-bottom:3rem;letter-spacing:-.02em}
-.sh2-w em{color:var(--yellow);font-style:normal;text-decoration:underline;text-decoration-color:var(--orange)}
-.pain-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
-.pain-card{
-  background:var(--dark-card);padding:2.5rem 2rem;
-  border-radius:var(--r-md);border:2px solid rgba(255,255,255,.06);
-  transition:transform .3s,border-color .3s,box-shadow .3s;cursor:default;
+.sh2-w{font-size:clamp(2rem,4.5vw,3.4rem);font-weight:800;color:var(--white);line-height:1.02;margin-bottom:0;letter-spacing:-.03em}
+.sh2-w em{
+  color:var(--orange);
+  font-style:normal;
+  position:relative;
+  display:inline-block;
 }
-.pain-card:hover{transform:translateY(-6px) rotate(-.5deg);border-color:var(--orange);box-shadow:0 16px 40px rgba(255,107,43,.15)}
-.pain-icon{font-size:2.5rem;margin-bottom:1rem}
-.pain-title{font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:.6rem;text-transform:uppercase;letter-spacing:.02em}
-.pain-desc{font-size:.9rem;color:rgba(255,255,255,.6);line-height:1.65}
+.sh2-w em::after{
+  content:'';
+  position:absolute;
+  bottom:-4px;left:0;right:0;height:3px;
+  background:var(--orange);
+  border-radius:4px;
+  opacity:.5;
+}
+
+/* PAIN CARDS — horizontal scroll filmstrip */
+.pain-filmstrip{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+  position:relative;
+  z-index:2;
+}
+
+.pain-card{
+  position:relative;
+  padding:2.8rem 2rem 3rem;
+  border-right:1.5px solid rgba(255,255,255,.07);
+  overflow:hidden;
+  cursor:default;
+  transition:background .35s ease;
+  background:transparent;
+}
+.pain-card:last-child{border-right:none}
+
+/* Hover fill */
+.pain-card::before{
+  content:'';
+  position:absolute;inset:0;
+  background:var(--orange);
+  opacity:0;
+  transition:opacity .35s ease;
+  z-index:0;
+}
+.pain-card:hover::before{opacity:1}
+
+/* Number big ghost */
+.pain-bg-num{
+  position:absolute;
+  top:-20px;right:-10px;
+  font-size:9rem;
+  font-weight:800;
+  color:rgba(255,255,255,.04);
+  line-height:1;
+  pointer-events:none;
+  user-select:none;
+  z-index:0;
+  transition:color .35s ease, opacity .35s ease;
+  letter-spacing:-.05em;
+}
+.pain-card:hover .pain-bg-num{
+  color:rgba(0,0,0,.08);
+}
+
+.pain-inner{position:relative;z-index:1;height:100%}
+
+.pain-num{
+  font-size:.65rem;font-weight:800;letter-spacing:.14em;
+  text-transform:uppercase;
+  color:rgba(255,107,43,1);
+  margin-bottom:1.4rem;
+  display:flex;align-items:center;gap:10px;
+  transition:color .3s;
+}
+.pain-card:hover .pain-num{color:rgba(255,255,255,.6)}
+.pain-num::before{content:'';display:block;width:32px;height:2px;background:currentColor;flex-shrink:0}
+
+.pain-icon-wrap{
+  font-size:2.4rem;
+  margin-bottom:1.4rem;
+  display:block;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  line-height:1;
+}
+.pain-card:hover .pain-icon-wrap{transform:scale(1.2) rotate(-6deg)}
+
+.pain-title{
+  font-size:1rem;font-weight:800;
+  color:var(--white);
+  margin-bottom:.75rem;
+  line-height:1.25;
+  letter-spacing:-.01em;
+  transition:color .3s;
+}
+.pain-card:hover .pain-title{color:var(--white)}
+
+.pain-desc{
+  font-size:.88rem;
+  color:rgba(255,255,255,.45);
+  line-height:1.65;
+  transition:color .3s;
+}
+.pain-card:hover .pain-desc{color:rgba(255,255,255,.85)}
+
+/* bottom accent bar */
+.pain-card::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;height:3px;
+  background:var(--orange);
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform .4s cubic-bezier(.25,1,.5,1);
+}
+.pain-card:hover::after{transform:scaleX(1)}
 
 /* ── FOTOS COM MÁSCARA ── */
 .img-container{position:relative;width:100%;display:flex;justify-content:center;align-items:center;padding:2rem}
@@ -263,16 +422,239 @@ nav{
 .inc-desc{font-size:.85rem;line-height:1.6;opacity:.9}
 
 /* ── DEPOIMENTO ── */
-.s-depo{background:var(--orange);padding:6rem 2rem;border-top:3px solid var(--black)}
-.depo-inner{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
-.depo-content{display:flex;flex-direction:column;gap:1.5rem}
-.depo-stars{font-size:1.6rem;letter-spacing:2px}
-.depo-text{font-size:clamp(1.1rem,2vw,1.5rem);font-weight:600;color:var(--white);line-height:1.6}
-.depo-text::before{content:'"';font-size:4rem;line-height:0;vertical-align:-1.2rem;opacity:.3;margin-right:8px}
-.depo-author{display:flex;align-items:center;gap:14px;margin-top:1rem}
-.depo-av{width:56px;height:56px;border-radius:50%;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.1rem;color:var(--black);flex-shrink:0;border:2px solid var(--black)}
-.depo-name{font-weight:800;font-size:1rem;color:var(--white);text-transform:uppercase;letter-spacing:.05em}
-.depo-role{font-size:.85rem;color:rgba(255,255,255,.8)}
+.s-depo{
+  background:var(--cream);
+  padding:7rem 2rem;
+  border-top:3px solid var(--black);
+  position:relative;
+  overflow:hidden;
+}
+
+/* subtle grid background */
+.s-depo::before{
+  content:'';
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(0,0,0,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,0,0,.04) 1px,transparent 1px);
+  background-size:40px 40px;
+  pointer-events:none;
+}
+
+.depo-inner{
+  max-width:1040px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1.1fr;
+  gap:5rem;align-items:center;
+  position:relative;z-index:1;
+}
+
+/* foto */
+.depo-photo-wrap{
+  position:relative;
+}
+
+/* Polaroid-style frame */
+.depo-polaroid{
+  background:var(--white);
+  border:3px solid var(--black);
+  box-shadow:8px 8px 0 var(--black);
+  border-radius:4px;
+  padding:1.2rem 1.2rem 3.5rem;
+  transform:rotate(-2.5deg);
+  transition:transform .4s cubic-bezier(.34,1.4,.64,1),box-shadow .4s ease;
+  position:relative;z-index:2;
+}
+.depo-photo-wrap:hover .depo-polaroid{
+  transform:rotate(0deg) scale(1.02);
+  box-shadow:14px 14px 0 var(--black);
+}
+
+.depo-polaroid-img{
+  width:100%;
+  aspect-ratio:3/4;
+  overflow:hidden;
+  border-radius:2px;
+  background:linear-gradient(145deg, #f0e6da 0%, #e8d5c4 40%, #d4b99a 100%);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+
+/* Avatar ilustrativo dentro do polaroid quando não há foto */
+.depo-avatar-illustration{
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  width:100%;height:100%;
+  padding-bottom:0;
+  position:relative;overflow:hidden;
+}
+.depo-avatar-body{
+  width:75%;
+  background:linear-gradient(180deg,#FF6B2B 0%,#e55a20 100%);
+  height:55%;
+  border-radius:50% 50% 0 0;
+  position:absolute;bottom:0;
+  box-shadow:inset 0 4px 20px rgba(0,0,0,.15);
+}
+.depo-avatar-head{
+  width:100px;height:100px;
+  background:linear-gradient(145deg,#f5c9a0,#e8a876);
+  border-radius:50%;
+  position:absolute;bottom:45%;
+  box-shadow:0 4px 16px rgba(0,0,0,.15);
+  overflow:hidden;
+  border:3px solid rgba(255,255,255,.6);
+}
+.depo-avatar-hair{
+  position:absolute;top:-4px;left:-4px;right:-4px;
+  height:60%;
+  background:linear-gradient(180deg,#2d1a0e 0%,#4a2c10 60%,transparent 100%);
+  border-radius:50% 50% 0 0;
+}
+.depo-avatar-face-eye{
+  position:absolute;
+  width:10px;height:10px;
+  background:#2d1a0e;
+  border-radius:50%;
+  top:44%;
+}
+.depo-avatar-face-eye.l{left:28%}
+.depo-avatar-face-eye.r{right:28%}
+.depo-avatar-face-smile{
+  position:absolute;
+  bottom:22%;left:50%;
+  transform:translateX(-50%);
+  width:28px;height:12px;
+  border-bottom:2.5px solid #2d1a0e;
+  border-radius:0 0 16px 16px;
+}
+.depo-avatar-bg-circle{
+  position:absolute;
+  width:180%;height:180%;
+  bottom:30%;left:50%;
+  transform:translateX(-50%);
+  background:radial-gradient(circle,rgba(255,217,61,.35) 0%,transparent 65%);
+  pointer-events:none;
+}
+
+.depo-polaroid-caption{
+  position:absolute;bottom:0;left:0;right:0;
+  text-align:center;
+  padding:.7rem;
+  font-size:.78rem;font-weight:700;
+  color:#333;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+
+/* Sticker sobre o polaroid */
+.depo-sticker{
+  position:absolute;
+  top:-18px;right:-18px;
+  background:var(--yellow);
+  border:2.5px solid var(--black);
+  border-radius:50%;
+  width:78px;height:78px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:5;
+  box-shadow:4px 4px 0 var(--black);
+  transform:rotate(12deg);
+  animation:badge-float 3s ease-in-out infinite;
+  font-size:.55rem;font-weight:800;
+  text-align:center;text-transform:uppercase;letter-spacing:.06em;
+  line-height:1.3;
+  color:var(--black);
+}
+.depo-sticker-star{font-size:1.2rem;margin-bottom:1px;display:block}
+
+/* Seta decorativa */
+.depo-arrow-deco{
+  position:absolute;
+  left:calc(100% - 10px);
+  top:40%;
+  width:60px;height:60px;
+  pointer-events:none;
+  display:none;
+}
+
+/* Content lado direito */
+.depo-content{
+  display:flex;flex-direction:column;gap:2rem;
+}
+
+.depo-eyebrow{
+  font-size:.72rem;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--orange);
+  display:flex;align-items:center;gap:8px;
+}
+.depo-eyebrow::before{content:'✦'}
+
+.depo-quote-mark{
+  font-family:Georgia,serif;
+  font-size:8rem;
+  line-height:.6;
+  color:var(--orange);
+  opacity:.25;
+  margin-bottom:-.5rem;
+  display:block;
+  user-select:none;
+}
+
+.depo-stars{
+  display:flex;gap:4px;
+}
+.depo-stars span{
+  color:var(--yellow);
+  font-size:1.3rem;
+  display:inline-block;
+  animation:star-pop .4s cubic-bezier(.34,1.56,.64,1) both;
+}
+.depo-stars span:nth-child(1){animation-delay:.1s}
+.depo-stars span:nth-child(2){animation-delay:.2s}
+.depo-stars span:nth-child(3){animation-delay:.3s}
+.depo-stars span:nth-child(4){animation-delay:.4s}
+.depo-stars span:nth-child(5){animation-delay:.5s}
+@keyframes star-pop{
+  from{transform:scale(0) rotate(-30deg);opacity:0}
+  to{transform:scale(1) rotate(0deg);opacity:1}
+}
+
+.depo-text{
+  font-size:clamp(1.05rem,1.8vw,1.3rem);
+  font-weight:600;
+  color:var(--black);
+  line-height:1.7;
+  position:relative;
+}
+
+.depo-author{
+  display:flex;align-items:center;gap:16px;
+  padding-top:1.5rem;
+  border-top:2px solid rgba(0,0,0,.1);
+}
+.depo-av{
+  width:52px;height:52px;
+  border-radius:50%;
+  background:var(--orange);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:1rem;
+  color:var(--white);
+  flex-shrink:0;
+  border:3px solid var(--black);
+  box-shadow:3px 3px 0 var(--black);
+}
+.depo-name{font-weight:800;font-size:1rem;color:var(--black);letter-spacing:.02em}
+.depo-role{font-size:.82rem;color:#777;margin-top:2px}
+
+.depo-verified{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,107,43,.1);
+  border:1.5px solid rgba(255,107,43,.25);
+  border-radius:100px;
+  padding:.35rem .9rem;
+  font-size:.72rem;font-weight:700;
+  color:var(--orange);
+  margin-left:auto;
+  white-space:nowrap;
+}
 
 /* ── PREÇO ── */
 .s-preco{background:var(--cream);padding:6rem 2rem;border-top:3px solid var(--black)}
@@ -331,6 +713,10 @@ footer a{color:var(--orange);text-decoration:none;font-weight:600}
 @media(max-width:1000px){
   .pgrid{grid-template-columns:repeat(2,1fr)}
   .inc-grid{grid-template-columns:repeat(2,1fr)}
+  .pain-filmstrip{grid-template-columns:repeat(2,1fr)}
+  .pain-card{border-right:none;border-bottom:1.5px solid rgba(255,255,255,.07)}
+  .pain-card:nth-child(even){border-right:none}
+  .dores-header{grid-template-columns:1fr;gap:1.5rem}
 }
 @media(max-width:900px){
   .hero{grid-template-columns:1fr;min-height:auto;text-align:center}
@@ -339,9 +725,18 @@ footer a{color:var(--orange);text-decoration:none;font-weight:600}
   .video-wrap{max-width:95vw}
   .s-split{grid-template-columns:1fr;text-align:center}
   .split-content{padding:0 2rem 4rem 2rem;align-items:center}
-  .depo-inner{grid-template-columns:1fr;text-align:center}
-  .depo-author{justify-content:center}
+  .depo-inner{grid-template-columns:1fr;text-align:center;gap:3rem}
+  .depo-author{justify-content:center;flex-wrap:wrap}
+  .depo-verified{margin-left:0;width:100%;justify-content:center}
+  .depo-photo-wrap{max-width:300px;margin:0 auto}
+  .depo-polaroid{max-width:280px;margin:0 auto}
   .img-container{max-width:420px;margin:0 auto}
+}
+@media(max-width:600px){
+  .pain-filmstrip{grid-template-columns:1fr}
+  .pain-card{border-right:none;border-bottom:1.5px solid rgba(255,255,255,.07)}
+  .pain-card:last-child{border-bottom:none}
+  .dores-chaos-badge{display:none}
 }
 @media(max-width:500px){
   nav{padding:.75rem 1rem}
@@ -351,7 +746,6 @@ footer a{color:var(--orange);text-decoration:none;font-weight:600}
   .btn-white,.btn-ghost-w{text-align:center;justify-content:center;width:100%}
   .hero-proof{justify-content:center}
   .inc-grid{grid-template-columns:1fr}
-  .pain-grid{grid-template-columns:1fr}
   .pgrid{grid-template-columns:1fr}
   .hero-badge{position:relative;bottom:0;left:0;margin-top:-1rem;margin-bottom:.5rem;animation:none;transform:rotate(-4deg)}
   .hero-sticker{display:none}
@@ -438,15 +832,64 @@ footer a{color:var(--orange);text-decoration:none;font-weight:600}
 
 <!-- DORES -->
 <section class="s-dores">
-  <div class="container">
-    <div class="eyebrow-w" data-fade>O problema</div>
-    <h2 class="sh2-w" data-fade style="--d:.1s">Você ainda perde tempo<br>com <em>isso tudo?</em></h2>
-    <div class="pain-grid">
-      <div class="pain-card" data-fade style="--d:.1s"><div class="pain-icon">📱</div><div class="pain-title">WhatsApp lotado de "que horas tem?"</div><div class="pain-desc">No meio do atendimento, cliente perguntando horário, você tentando responder e trabalhar ao mesmo tempo.</div></div>
-      <div class="pain-card" data-fade style="--d:.2s"><div class="pain-icon">📓</div><div class="pain-title">Agenda de papel ou planilha bagunçada</div><div class="pain-desc">Rasura, folha rasgada, horário duplo marcado sem querer. Dá trabalho e passa imagem amadora.</div></div>
-      <div class="pain-card" data-fade style="--d:.3s"><div class="pain-icon">😶</div><div class="pain-title">Cliente some depois de marcar</div><div class="pain-desc">Falta no horário sem aviso e você perdeu aquele espaço. Com confirmação automática, isso diminui muito.</div></div>
-      <div class="pain-card" data-fade style="--d:.4s"><div class="pain-icon">😩</div><div class="pain-title">Parece amador mesmo sendo ótima profissional</div><div class="pain-desc">Você é incrível no que faz, mas a experiência da cliente antes do atendimento não reflete isso.</div></div>
+  <div class="s-dores-bg-lines" aria-hidden="true" id="dores-lines"></div>
+
+  <div class="container" style="position:relative;z-index:2">
+    <div class="dores-header">
+      <div>
+        <div class="eyebrow-w" data-fade>O problema</div>
+        <h2 class="sh2-w" data-fade style="--d:.1s">Você ainda perde tempo<br>com <em>isso tudo?</em></h2>
+      </div>
+      <div class="dores-chaos-badge" data-fade style="--d:.2s">
+        <span class="num">4</span>
+        <span class="lbl">dores reais<br>de todo dia</span>
+      </div>
     </div>
+  </div>
+
+  <div class="pain-filmstrip">
+    <div class="pain-card" data-fade style="--d:.05s">
+      <div class="pain-bg-num">01</div>
+      <div class="pain-inner">
+        <div class="pain-num">01</div>
+        <div class="pain-icon-wrap">📱</div>
+        <div class="pain-title">WhatsApp lotado de "que horas tem?"</div>
+        <div class="pain-desc">No meio do atendimento, cliente perguntando horário, você tentando responder e trabalhar ao mesmo tempo.</div>
+      </div>
+    </div>
+    <div class="pain-card" data-fade style="--d:.15s">
+      <div class="pain-bg-num">02</div>
+      <div class="pain-inner">
+        <div class="pain-num">02</div>
+        <div class="pain-icon-wrap">📓</div>
+        <div class="pain-title">Agenda de papel ou planilha bagunçada</div>
+        <div class="pain-desc">Rasura, folha rasgada, horário duplo marcado sem querer. Dá trabalho e passa imagem amadora.</div>
+      </div>
+    </div>
+    <div class="pain-card" data-fade style="--d:.25s">
+      <div class="pain-bg-num">03</div>
+      <div class="pain-inner">
+        <div class="pain-num">03</div>
+        <div class="pain-icon-wrap">😶</div>
+        <div class="pain-title">Cliente some depois de marcar</div>
+        <div class="pain-desc">Falta no horário sem aviso e você perdeu aquele espaço. Com confirmação automática, isso diminui muito.</div>
+      </div>
+    </div>
+    <div class="pain-card" data-fade style="--d:.35s">
+      <div class="pain-bg-num">04</div>
+      <div class="pain-inner">
+        <div class="pain-num">04</div>
+        <div class="pain-icon-wrap">😩</div>
+        <div class="pain-title">Parece amador mesmo sendo ótima profissional</div>
+        <div class="pain-desc">Você é incrível no que faz, mas a experiência da cliente antes do atendimento não reflete isso.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dores-wave-bot" aria-hidden="true">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,80 C360,10 720,65 1080,20 C1260,2 1380,50 1440,28 L1440,80 Z" fill="var(--cream)"/>
+    </svg>
   </div>
 </section>
 
@@ -495,14 +938,28 @@ footer a{color:var(--orange);text-decoration:none;font-weight:600}
 <section class="s-depo">
   <div class="container">
     <div class="depo-inner">
-      <div class="img-container" data-fade>
-        <div class="img-bg-shape shape-drop" style="background:var(--black);bottom:10px;right:-20px;left:20px;top:30px"></div>
-        <div class="img-mask shape-drop">
-          <img src="foto3.png" alt="Profissional de estética no estúdio">
+
+      <!-- Lado esquerdo: polaroid + sticker -->
+      <div class="depo-photo-wrap" data-fade>
+        <div class="depo-sticker">
+          <span class="depo-sticker-star">⭐</span>
+          Cliente<br>real
+        </div>
+        <div class="depo-polaroid">
+          <div class="depo-polaroid-img">
+            <img src="eli-hro-new.jpeg" alt="Elis Miranda — especialista em beleza" style="width:100%;height:100%;object-fit:cover;object-position:center 15%;display:block">
+          </div>
+          <div class="depo-polaroid-caption">Elis Miranda ✂️</div>
         </div>
       </div>
+
+      <!-- Lado direito: depoimento -->
       <div class="depo-content" data-fade style="--d:.15s">
-        <div class="depo-stars">⭐⭐⭐⭐⭐</div>
+        <div class="depo-eyebrow">Depoimento real</div>
+        <div class="depo-stars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+        <span class="depo-quote-mark">"</span>
         <p class="depo-text">Eu fico de boca aberta até hoje como ficou profissional e fácil de usar! Minha cliente agenda sozinha, eu recebo no WhatsApp na hora, e tenho tudo no painel lindíssimo. Não tem preço a organização que isso trouxe pro meu dia a dia.</p>
         <div class="depo-author">
           <div class="depo-av">EM</div>
@@ -510,8 +967,10 @@ footer a{color:var(--orange);text-decoration:none;font-weight:600}
             <div class="depo-name">Elis Miranda</div>
             <div class="depo-role">Especialista em beleza · São Leopoldo, RS</div>
           </div>
+          <div class="depo-verified">✓ Verificado</div>
         </div>
       </div>
+
     </div>
   </div>
 </section>
@@ -603,6 +1062,23 @@ const obs=new IntersectionObserver(entries=>{
   });
 },{threshold:.12});
 document.querySelectorAll('[data-fade]').forEach(el=>obs.observe(el));
+
+// Dores background animated vertical lines
+(function(){
+  const container=document.getElementById('dores-lines');
+  if(!container)return;
+  const count=18;
+  for(let i=0;i<count;i++){
+    const l=document.createElement('span');
+    const left=(i/(count-1)*100).toFixed(1)+'%';
+    const height=Math.round(50+Math.random()*50)+'%';
+    const top=Math.round(Math.random()*30)+'%';
+    const delay=(Math.random()*3).toFixed(2)+'s';
+    const dur=(3+Math.random()*4).toFixed(2)+'s';
+    l.style.cssText=`left:${left};top:${top};height:${height};animation-delay:${delay};animation-duration:${dur}`;
+    container.appendChild(l);
+  }
+})();
 </script>
 </body>
 </html>
